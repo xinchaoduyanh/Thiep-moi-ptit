@@ -394,9 +394,13 @@ export function InvitationExperience({
             >
               {letterOpen && visibleWishLines.map((line, lineIndex) => (
                 <p className={styles.typedLine} key={`${lineIndex}-${line}`}>
-                  {line.split("").map((char, index) => (
-                    <span key={`${lineIndex}-${index}-${char}`} style={{ animationDelay: `${index * 22}ms` }}>
-                      {char === " " ? "\u00a0" : char}
+                  {line.split(/(\s+)/).map((part, index) => (
+                    <span
+                      className={part.trim() ? styles.typedWord : styles.typedSpace}
+                      key={`${lineIndex}-${index}-${part}`}
+                      style={{ animationDelay: `${index * 44}ms` }}
+                    >
+                      {part.trim() ? part : "\u00a0"}
                     </span>
                   ))}
                 </p>

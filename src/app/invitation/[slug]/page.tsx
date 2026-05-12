@@ -38,10 +38,35 @@ type InvitationSlugPageProps = {
 export async function generateMetadata({ params }: InvitationSlugPageProps): Promise<Metadata> {
   const { slug } = await params;
   const invite = await getInviteWithMessagesBySlug(slug);
+  const title = invite ? `Thiệp mời ${invite.guestName}` : "Thiệp mời PTIT";
+  const description = "Mở thiệp để xem lời nhắn riêng và thông tin lễ tốt nghiệp tại PTIT.";
 
   return {
-    title: invite ? `Thiệp mời ${invite.guestName} | PTIT` : "Thiệp mời PTIT",
-    description: "Thiệp mời dự lễ tốt nghiệp tại Học viện Công nghệ Bưu chính Viễn thông.",
+    title,
+    description,
+    alternates: {
+      canonical: `/invitation/${slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `/invitation/${slug}`,
+      images: [
+        {
+          url: giftImage.src,
+          width: giftImage.width,
+          height: giftImage.height,
+          alt: "Thiệp mời tốt nghiệp PTIT",
+        },
+      ],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [giftImage.src],
+    },
   };
 }
 

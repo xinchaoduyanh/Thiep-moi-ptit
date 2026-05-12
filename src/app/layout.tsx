@@ -13,8 +13,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Thiep Moi PTIT",
-  description: "Trang quan tri tao va quan ly thiep moi",
+  metadataBase: new URL("https://vuduyanh.id.vn"),
+  title: {
+    default: "Thiệp mời tốt nghiệp PTIT",
+    template: "%s | Thiệp mời PTIT",
+  },
+  description: "Thiệp mời dự lễ tốt nghiệp của Vũ Duy Anh tại PTIT.",
+  openGraph: {
+    title: "Thiệp mời tốt nghiệp PTIT",
+    description: "Mời bạn tới dự lễ tốt nghiệp của Vũ Duy Anh tại PTIT.",
+    url: "https://vuduyanh.id.vn",
+    siteName: "Thiệp mời PTIT",
+    locale: "vi_VN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Thiệp mời tốt nghiệp PTIT",
+    description: "Mời bạn tới dự lễ tốt nghiệp của Vũ Duy Anh tại PTIT.",
+  },
 };
 
 export default function RootLayout({

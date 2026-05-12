@@ -1395,6 +1395,14 @@
   animation: charIn 420ms ease forwards;
 }
 
+.typedWord {
+  white-space: nowrap;
+}
+
+.typedSpace {
+  width: 0.32em;
+}
+
 .revealCard button:disabled,
 .wishCard button:disabled {
   color: rgba(157, 57, 42, 0.52);
@@ -2366,8 +2374,25 @@
 }
 
 @media (max-width: 860px) {
+  .page {
+    scroll-snap-type: none;
+  }
+
   .section {
     padding: 24px;
+    min-height: auto;
+    overflow: visible;
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+  }
+
+  .hero,
+  .place,
+  .notice,
+  .gift,
+  .wish,
+  .reply {
+    min-height: 100svh;
   }
 
   .placeGrid,
