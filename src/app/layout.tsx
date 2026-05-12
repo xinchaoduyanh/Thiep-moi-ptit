@@ -12,6 +12,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const previewImage = "/og-invitation.jpg";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://vuduyanh.id.vn"),
   title: {
@@ -24,6 +26,14 @@ export const metadata: Metadata = {
     description: "Mời bạn tới dự lễ tốt nghiệp của Vũ Duy Anh tại PTIT.",
     url: "https://vuduyanh.id.vn",
     siteName: "Thiệp mời PTIT",
+    images: [
+      {
+        url: previewImage,
+        width: 1200,
+        height: 630,
+        alt: "Thiệp mời tốt nghiệp PTIT",
+      },
+    ],
     locale: "vi_VN",
     type: "website",
   },
@@ -31,6 +41,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Thiệp mời tốt nghiệp PTIT",
     description: "Mời bạn tới dự lễ tốt nghiệp của Vũ Duy Anh tại PTIT.",
+    images: [previewImage],
   },
 };
 
