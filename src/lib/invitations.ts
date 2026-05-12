@@ -51,6 +51,7 @@ type LocalStore = {
 };
 
 const localStorePath = path.join(process.cwd(), "data", "local-invites.json");
+const localFallbackEnabled = process.env.ENABLE_LOCAL_FALLBACK === "1";
 
 export const demoInvite: Invite = {
   id: "demo",
@@ -87,10 +88,11 @@ async function writeLocalStore(store: LocalStore) {
 
 function shouldUseLocalFallback(error?: { message?: string } | null) {
   return Boolean(
-    error?.message?.includes("Could not find the table") ||
+    localFallbackEnabled &&
+      (error?.message?.includes("Could not find the table") ||
       error?.message?.includes("schema cache") ||
       error?.message?.includes("relation") ||
-      error?.message?.includes("does not exist"),
+      error?.message?.includes("does not exist")),
   );
 }
 
