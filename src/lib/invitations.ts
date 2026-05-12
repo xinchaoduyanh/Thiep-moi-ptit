@@ -51,6 +51,7 @@ type LocalStore = {
 };
 
 const localStorePath = path.join(process.cwd(), "data", "local-invites.json");
+const useLocalData = process.env.STORAGE_DRIVER !== "supabase";
 const localFallbackEnabled = process.env.ENABLE_LOCAL_FALLBACK === "1";
 
 export const demoInvite: Invite = {
@@ -183,7 +184,7 @@ function speakerPronoun(salutation: string) {
 }
 
 export async function getInviteBySlug(slug: string) {
-  if (!isSupabaseConfigured()) {
+  if (useLocalData || !isSupabaseConfigured()) {
     const store = await readLocalStore();
     return store.invites.find((invite) => invite.slug === slug) || (slug === "demo" ? demoInvite : null);
   }
@@ -220,7 +221,7 @@ export async function getInviteWithMessagesBySlug(slug: string): Promise<InviteW
     return null;
   }
 
-  if (!isSupabaseConfigured() || invite.id === demoInvite.id) {
+  if (useLocalData || !isSupabaseConfigured() || invite.id === demoInvite.id) {
     const store = await readLocalStore();
 
     return {
@@ -264,7 +265,7 @@ export async function getInviteWithMessagesBySlug(slug: string): Promise<InviteW
 }
 
 export async function listInvitesWithMessages(): Promise<InviteWithMessages[]> {
-  if (!isSupabaseConfigured()) {
+  if (useLocalData || !isSupabaseConfigured()) {
     const store = await readLocalStore();
     return store.invites.map((invite) => ({
       ...invite,
@@ -322,7 +323,7 @@ export async function createInvite(input: {
   const suffix = Math.random().toString(36).slice(2, 7);
   const slug = input.slug?.trim() ? slugify(input.slug) : `${slugify(guestName)}-${suffix}`;
 
-  if (!isSupabaseConfigured()) {
+  if (useLocalData || !isSupabaseConfigured()) {
     const store = await readLocalStore();
 
     if (store.invites.some((invite) => invite.slug === slug)) {
@@ -418,7 +419,7 @@ export async function createInviteMessage(input: {
     throw new Error("MESSAGE_REQUIRED");
   }
 
-  if (!isSupabaseConfigured() || input.inviteId === demoInvite.id) {
+  if (useLocalData || !isSupabaseConfigured() || input.inviteId === demoInvite.id) {
     const store = await readLocalStore();
     const saved = {
       id: crypto.randomUUID(),
@@ -482,7 +483,7 @@ export async function deleteInvite(inviteId: string) {
     throw new Error("INVITE_ID_REQUIRED");
   }
 
-  if (!isSupabaseConfigured()) {
+  if (useLocalData || !isSupabaseConfigured()) {
     const store = await readLocalStore();
 
     await writeLocalStore({
@@ -535,7 +536,7 @@ export async function updateInvite(input: {
     throw new Error("INVITE_UPDATE_INVALID");
   }
 
-  if (!isSupabaseConfigured()) {
+  if (useLocalData || !isSupabaseConfigured()) {
     const store = await readLocalStore();
     const duplicate = store.invites.some((invite) => invite.id !== id && invite.slug === slug);
 

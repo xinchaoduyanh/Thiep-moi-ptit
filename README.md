@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Thiep moi PTIT
 
-## Getting Started
+Next.js app quan ly va hien thi thiep moi tot nghiep.
 
-First, run the development server:
+## Data storage
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Mac dinh app dung JSON local:
+
+```env
+STORAGE_DRIVER=local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Du lieu nam trong `data/local-invites.json`. File nay bi ignore khoi Git de tranh day nham data rieng len repo.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Neu muon quay lai Supabase sau nay, doi:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+STORAGE_DRIVER=supabase
+SUPABASE_URL=...
+SUPABASE_SERVICE_ROLE_KEY=...
+```
 
-## Learn More
+Sau do chay SQL trong `supabase/schema.sql`.
 
-To learn more about Next.js, take a look at the following resources:
+## Local
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm ci
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Production
 
-## Deploy on Vercel
+```bash
+cp .env.example .env
+nano .env
+npm ci
+npm run build
+npm run pm2:start
+pm2 save
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Khi cap nhat code tren server:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+git pull
+npm ci
+npm run build
+npm run pm2:restart
+```
