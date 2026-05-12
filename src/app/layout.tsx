@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const previewImage = "/og-invitation.jpg";
+const previewImage = "/og-invitation-v2.jpg";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://vuduyanh.id.vn"),
@@ -29,6 +29,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: previewImage,
+        secureUrl: previewImage,
+        type: "image/jpeg",
         width: 1200,
         height: 630,
         alt: "Thiệp mời tốt nghiệp PTIT",
