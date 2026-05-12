@@ -172,7 +172,7 @@ export function InvitationExperience({
   );
   const notes = useMemo(
     () => [
-      `Đừng mang hoa hay tình yêu to bự quá nhé, ${speaker} sẽ khó khăn trong việc cầm tình yêu của ${invitee} về lắm, sự có mặt của ${invitee} là món quà tuyệt nhất rùi.`,
+      `Khum cần phải mang hoa đâu vì ${speaker} sẽ rất khó di chuyển được tình yêu của mọi người lắm, sự có mặt của ${invitee} là món quà tuyệt nhất rùi.`,
       `Hãy cố gắng đi trong khung giờ đó nha để ${speaker} có thể đón được ${invitee} nhé.`,
     ],
     [invitee, speaker],
