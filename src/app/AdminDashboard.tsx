@@ -28,6 +28,8 @@ const salutations = [
   { value: "co", label: "Cô" },
 ];
 
+const invitesPerPage = 8;
+
 function formatDate(value?: string) {
   if (!value) {
     return "Vừa tạo";
@@ -216,9 +218,17 @@ function AdminMessages({ messages }: { messages: InviteWithMessages["messages"] 
 export function AdminDashboard({ createAction, deleteAction, invites, logoutAction, updateAction }: AdminDashboardProps) {
   const [isCreating, setIsCreating] = useState(false);
   const [selectedId, setSelectedId] = useState(invites[0]?.id || "");
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.max(1, Math.ceil(invites.length / invitesPerPage));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const visibleInvites = useMemo(() => {
+    const start = (safeCurrentPage - 1) * invitesPerPage;
+
+    return invites.slice(start, start + invitesPerPage);
+  }, [safeCurrentPage, invites]);
   const selectedInvite = useMemo(
-    () => invites.find((invite) => invite.id === selectedId) || invites[0],
-    [invites, selectedId],
+    () => visibleInvites.find((invite) => invite.id === selectedId) || visibleInvites[0] || invites[0],
+    [invites, selectedId, visibleInvites],
   );
 
   return (
@@ -250,13 +260,16 @@ export function AdminDashboard({ createAction, deleteAction, invites, logoutActi
 
           <div className={styles.inviteList}>
             {invites.length ? (
-              invites.map((invite) => (
+              visibleInvites.map((invite) => (
                 <InviteListItem
                   active={invite.id === selectedInvite?.id}
                   deleteAction={deleteAction}
                   invite={invite}
                   key={invite.id}
-                  onSelect={() => setSelectedId(invite.id)}
+                  onSelect={() => {
+                    setSelectedId(invite.id);
+                    setIsCreating(false);
+                  }}
                 />
               ))
             ) : (
@@ -266,6 +279,28 @@ export function AdminDashboard({ createAction, deleteAction, invites, logoutActi
               </div>
             )}
           </div>
+
+          {invites.length > invitesPerPage ? (
+            <div className={styles.paginationBar}>
+              <button
+                type="button"
+                disabled={safeCurrentPage === 1}
+                onClick={() => setCurrentPage((page) => Math.max(1, Math.min(page, totalPages) - 1))}
+              >
+                Trước
+              </button>
+              <span>
+                Trang {safeCurrentPage}/{totalPages}
+              </span>
+              <button
+                type="button"
+                disabled={safeCurrentPage === totalPages}
+                onClick={() => setCurrentPage((page) => Math.min(totalPages, Math.min(page, totalPages) + 1))}
+              >
+                Sau
+              </button>
+            </div>
+          ) : null}
         </section>
 
         <aside className={styles.detailPanel} aria-label="Chi tiết thiệp">
@@ -305,7 +340,7 @@ export function AdminDashboard({ createAction, deleteAction, invites, logoutActi
                 <p>{selectedInvite.privateWish || "Chưa có lời nhắn."}</p>
               </section>
 
-              <EditInviteForm invite={selectedInvite} updateAction={updateAction} />
+              <EditInviteForm invite={selectedInvite} key={selectedInvite.id} updateAction={updateAction} />
               <AdminMessages messages={selectedInvite.messages} />
 
               <div className={styles.detailActions}>

@@ -112,7 +112,7 @@
 
 .listPanel {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   border-right: 1px solid rgba(34, 24, 15, 0.1);
   background:
     linear-gradient(180deg, rgba(219, 232, 223, 0.48), rgba(255, 252, 247, 0.76) 32%),
@@ -164,6 +164,7 @@
   gap: 12px;
   align-items: center;
   width: 100%;
+  min-height: 108px;
   border: 1px solid rgba(34, 24, 15, 0.08);
   overflow: hidden;
   border-radius: 14px;
@@ -263,6 +264,41 @@
 .deleteConfirm {
   color: #9a3b2a;
   background: #fff2ee;
+}
+
+.paginationBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px;
+  border-top: 1px solid rgba(34, 24, 15, 0.08);
+  background: rgba(255, 252, 247, 0.74);
+}
+
+.paginationBar span {
+  color: #5f503d;
+  font-size: 0.84rem;
+  font-weight: 900;
+}
+
+.paginationBar button {
+  min-height: 34px;
+  border: 1px solid rgba(47, 80, 62, 0.18);
+  border-radius: 999px;
+  padding: 8px 12px;
+  color: #2f503e;
+  background: #f6fbf7;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.paginationBar button:disabled {
+  color: rgba(95, 80, 61, 0.46);
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.54);
 }
 
 .inviteMeta {
