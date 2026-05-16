@@ -1412,11 +1412,14 @@
 }
 
 .reply {
-  grid-template-rows: 1fr auto;
+  grid-template-columns: minmax(0, 560px) minmax(300px, 420px);
+  grid-template-rows: auto auto;
+  align-content: center;
   gap: 28px;
 }
 
 .replyNote {
+  grid-column: 1;
   width: min(560px, 100%);
   padding: clamp(30px, 5vw, 56px);
   background:
@@ -1550,10 +1553,21 @@
 
 .messageHistory {
   position: relative;
+  grid-column: 2;
   z-index: 1;
-  width: min(560px, 100%);
+  width: min(420px, 100%);
   display: grid;
   gap: 14px;
+  align-self: center;
+}
+
+.messageHeader h2 {
+  margin-top: 8px;
+  color: var(--brown);
+  font-family: var(--font-handwriting), cursive;
+  font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.04;
 }
 
 .messageList {
@@ -1592,6 +1606,7 @@
 
 .thanks {
   position: relative;
+  grid-column: 1 / -1;
   z-index: 1;
   text-align: center;
 }
@@ -2396,8 +2411,15 @@
   }
 
   .placeGrid,
-  .giftLayout {
+  .giftLayout,
+  .reply {
     grid-template-columns: 1fr;
+  }
+
+  .replyNote,
+  .messageHistory,
+  .thanks {
+    grid-column: 1;
   }
 
   .mapNote {

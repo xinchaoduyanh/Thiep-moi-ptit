@@ -69,6 +69,7 @@ export default async function InvitationPage({ searchParams }: InvitationPagePro
       inviteId={demoInvite.id}
       inviteSlug={demoInvite.slug}
       messageAction={submitInvitationMessage}
+      messages={[]}
       salutation={salutationLabel(demoInvite.salutation)}
       schoolImage={schoolImage}
       wishLines={wishLines(query.wish)}
