@@ -370,9 +370,10 @@
 
 .adminInbox {
   min-height: 0;
-  max-height: 300px;
+  grid-template-rows: auto minmax(0, 1fr);
+  max-height: min(520px, 64vh);
   border-radius: 18px;
-  overflow: hidden;
+  overflow: visible;
   background: rgba(255, 255, 255, 0.62);
 }
 
@@ -392,8 +393,10 @@
 .adminInboxList {
   min-height: 0;
   display: grid;
+  align-content: start;
   gap: 9px;
-  overflow: auto;
+  overflow-y: auto;
+  padding-right: 6px;
 }
 
 .adminInboxList article {
