@@ -112,7 +112,7 @@
 
 .listPanel {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
   border-right: 1px solid rgba(34, 24, 15, 0.1);
   background:
     linear-gradient(180deg, rgba(219, 232, 223, 0.48), rgba(255, 252, 247, 0.76) 32%),
@@ -357,7 +357,8 @@
 }
 
 .editForm,
-.adminMessages {
+.adminMessages,
+.adminInbox {
   display: grid;
   gap: 14px;
   margin-top: 16px;
@@ -365,6 +366,64 @@
   border: 1px solid rgba(34, 24, 15, 0.08);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.62);
+}
+
+.adminInbox {
+  min-height: 0;
+  max-height: 238px;
+  margin: 0;
+  border-width: 1px 0 0;
+  border-radius: 0;
+  overflow: hidden;
+  background: rgba(255, 252, 247, 0.72);
+}
+
+.adminInboxHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.adminInboxHeader h3 {
+  margin-top: 3px;
+  color: #2f503e;
+  font-size: 1.02rem;
+}
+
+.adminInboxList {
+  min-height: 0;
+  display: grid;
+  gap: 9px;
+  overflow: auto;
+}
+
+.adminInboxList article {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid rgba(34, 24, 15, 0.08);
+  border-radius: 12px;
+  background: #fffdf8;
+}
+
+.adminInboxList a {
+  color: #2f503e;
+  font-size: 0.86rem;
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.adminInboxList p {
+  color: #5f503d;
+  line-height: 1.45;
+}
+
+.adminInboxList time {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
 }
 
 .editForm label {

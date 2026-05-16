@@ -92,7 +92,6 @@ export default async function InvitationSlugPage({ params }: InvitationSlugPageP
       inviteId={invite.id}
       inviteSlug={invite.slug}
       messageAction={submitInvitationMessage}
-      messages={invite.messages}
       salutation={salutationLabel(invite.salutation)}
       schoolImage={schoolImage}
       wishLines={splitWishLines(invite.privateWish)}

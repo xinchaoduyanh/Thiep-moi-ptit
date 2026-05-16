@@ -16,6 +16,12 @@ type AdminDashboardProps = {
   updateAction: (state: UpdateInviteState, formData: FormData) => Promise<UpdateInviteState>;
 };
 
+type AdminInboxMessage = InviteWithMessages["messages"][number] & {
+  inviteGuestName: string;
+  inviteSalutation: string;
+  inviteSlug: string;
+};
+
 const salutations = [
   { value: "anh", label: "Anh" },
   { value: "chi", label: "Chị" },
@@ -66,6 +72,10 @@ function salutationLabel(value: string) {
   };
 
   return labels[value] || "Bạn";
+}
+
+function sortNewestFirst<T extends { createdAt: string }>(items: T[]) {
+  return [...items].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
 }
 
 function InviteListItem({
@@ -192,19 +202,53 @@ function EditInviteForm({
   );
 }
 
+function AdminInbox({ messages }: { messages: AdminInboxMessage[] }) {
+  return (
+    <section className={styles.adminInbox}>
+      <div className={styles.adminInboxHeader}>
+        <p className={styles.eyebrow}>Inbox lời nhắn</p>
+        <h3>{messages.length} lời nhắn mới nhất</h3>
+      </div>
+      {messages.length ? (
+        <div className={styles.adminInboxList}>
+          {messages.map((item) => (
+            <article key={item.id}>
+              <Link href={`/invitation/${item.inviteSlug}`}>
+                {salutationLabel(item.inviteSalutation)} {item.inviteGuestName}
+              </Link>
+              <p>{item.message}</p>
+              <time dateTime={item.createdAt}>
+                {item.senderName ? `${item.senderName} · ` : ""}
+                {formatDate(item.createdAt)}
+              </time>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p className={styles.emptyText}>Chưa có lời nhắn nào từ khách.</p>
+      )}
+    </section>
+  );
+}
+
 function AdminMessages({ messages }: { messages: InviteWithMessages["messages"] }) {
+  const sortedMessages = useMemo(() => sortNewestFirst(messages), [messages]);
+
   return (
     <section className={styles.adminMessages}>
       <div>
         <p className={styles.eyebrow}>Lời nhắn gửi đến</p>
         <h3>{messages.length} lời nhắn</h3>
       </div>
-      {messages.length ? (
+      {sortedMessages.length ? (
         <div className={styles.adminMessageList}>
-          {messages.map((item) => (
+          {sortedMessages.map((item) => (
             <article key={item.id}>
               <p>{item.message}</p>
-              <time dateTime={item.createdAt}>{formatDate(item.createdAt)}</time>
+              <time dateTime={item.createdAt}>
+                {item.senderName ? `${item.senderName} · ` : ""}
+                {formatDate(item.createdAt)}
+              </time>
             </article>
           ))}
         </div>
@@ -226,6 +270,20 @@ export function AdminDashboard({ createAction, deleteAction, invites, logoutActi
 
     return invites.slice(start, start + invitesPerPage);
   }, [safeCurrentPage, invites]);
+  const allMessages = useMemo(
+    () =>
+      sortNewestFirst(
+        invites.flatMap((invite) =>
+          invite.messages.map((message) => ({
+            ...message,
+            inviteGuestName: invite.guestName,
+            inviteSalutation: invite.salutation,
+            inviteSlug: invite.slug,
+          })),
+        ),
+      ),
+    [invites],
+  );
   const selectedInvite = useMemo(
     () => visibleInvites.find((invite) => invite.id === selectedId) || visibleInvites[0] || invites[0],
     [invites, selectedId, visibleInvites],
@@ -279,6 +337,8 @@ export function AdminDashboard({ createAction, deleteAction, invites, logoutActi
               </div>
             )}
           </div>
+
+          <AdminInbox messages={allMessages} />
 
           {invites.length > invitesPerPage ? (
             <div className={styles.paginationBar}>

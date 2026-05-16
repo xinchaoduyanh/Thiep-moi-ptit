@@ -1412,14 +1412,11 @@
 }
 
 .reply {
-  grid-template-columns: minmax(0, 560px) minmax(300px, 420px);
-  grid-template-rows: auto auto;
-  align-content: center;
+  grid-template-rows: 1fr auto;
   gap: 28px;
 }
 
 .replyNote {
-  grid-column: 1;
   width: min(560px, 100%);
   padding: clamp(30px, 5vw, 56px);
   background:
@@ -1551,62 +1548,8 @@
   font-weight: 700;
 }
 
-.messageHistory {
-  position: relative;
-  grid-column: 2;
-  z-index: 1;
-  width: min(420px, 100%);
-  display: grid;
-  gap: 14px;
-  align-self: center;
-}
-
-.messageHeader h2 {
-  margin-top: 8px;
-  color: var(--brown);
-  font-family: var(--font-handwriting), cursive;
-  font-size: clamp(2.2rem, 4.2vw, 3.4rem);
-  font-weight: 800;
-  line-height: 1.04;
-}
-
-.messageList {
-  display: grid;
-  gap: 10px;
-  max-height: 220px;
-  overflow: auto;
-  padding-right: 6px;
-}
-
-.messageItem {
-  padding: 14px 16px;
-  border: 1px solid rgba(199, 90, 122, 0.14);
-  background: rgba(255, 250, 240, 0.64);
-  box-shadow: 8px 8px 0 rgba(215, 94, 139, 0.08);
-  animation: lineIn 480ms ease both;
-}
-
-.messageItem p,
-.noMessages {
-  color: #5b3d35;
-  font-family: var(--font-serif), Georgia, serif;
-  font-size: 1.05rem;
-  line-height: 1.6;
-}
-
-.messageItem time {
-  display: block;
-  margin-top: 8px;
-  color: rgba(154, 59, 42, 0.72);
-  font-family: var(--font-body), Arial, sans-serif;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-}
-
 .thanks {
   position: relative;
-  grid-column: 1 / -1;
   z-index: 1;
   text-align: center;
 }
@@ -2411,15 +2354,8 @@
   }
 
   .placeGrid,
-  .giftLayout,
-  .reply {
+  .giftLayout {
     grid-template-columns: 1fr;
-  }
-
-  .replyNote,
-  .messageHistory,
-  .thanks {
-    grid-column: 1;
   }
 
   .mapNote {

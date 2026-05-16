@@ -4,7 +4,6 @@ import Image, { type StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import fbImage from "../../../assets/fb.png";
-import type { InviteMessage } from "@/lib/invitations";
 import type { MessageFormState } from "./actions";
 import styles from "./invitation.module.css";
 
@@ -18,7 +17,6 @@ type InvitationExperienceProps = {
   inviteId: string;
   inviteSlug: string;
   messageAction: (state: MessageFormState, formData: FormData) => Promise<MessageFormState>;
-  messages: InviteMessage[];
   salutation: string;
   schoolImage: StaticImageData;
   wishLines: string[];
@@ -103,16 +101,6 @@ function TrendDecor() {
   );
 }
 
-function formatMessageTime(value: string) {
-  return new Intl.DateTimeFormat("vi-VN", {
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    month: "2-digit",
-    timeZone: "Asia/Bangkok",
-  }).format(new Date(value));
-}
-
 function useScrollGuard(isUnlocked: boolean) {
   const sectionRef = useRef<HTMLElement | null>(null);
 
@@ -147,7 +135,6 @@ export function InvitationExperience({
   inviteId,
   inviteSlug,
   messageAction,
-  messages,
   salutation,
   schoolImage,
   wishLines,
@@ -192,10 +179,6 @@ export function InvitationExperience({
   );
   const giftDone = giftStep >= giftLines.length;
   const visibleGiftLines = useMemo(() => giftLines.slice(0, giftStep), [giftLines, giftStep]);
-  const sortedMessages = useMemo(
-    () => [...messages].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)),
-    [messages],
-  );
   const wishReserveHeight = Math.min(420, Math.max(230, wishLines.length * 92 + 48));
   const wishCardHeight = Math.min(680, Math.max(500, wishReserveHeight + 280));
 
@@ -480,31 +463,6 @@ export function InvitationExperience({
             </p>
           ) : null}
         </form>
-        <section className={styles.messageHistory} aria-label="Lời nhắn gửi đến">
-          <div className={styles.messageHeader}>
-            <p className={styles.kicker}>Lời nhắn gửi đến</p>
-            <h2>{sortedMessages.length ? `${sortedMessages.length} lời nhắn` : "Chưa có lời nhắn"}</h2>
-          </div>
-          {sortedMessages.length ? (
-            <div className={styles.messageList}>
-              {sortedMessages.map((item, index) => (
-                <article
-                  className={styles.messageItem}
-                  key={item.id}
-                  style={{ animationDelay: `${Math.min(index, 8) * 72}ms` }}
-                >
-                  <p>{item.message}</p>
-                  <time dateTime={item.createdAt}>
-                    {item.senderName ? `${item.senderName} · ` : ""}
-                    {formatMessageTime(item.createdAt)}
-                  </time>
-                </article>
-              ))}
-            </div>
-          ) : (
-            <p className={styles.noMessages}>Lời nhắn mới sẽ hiện ở đây sau khi khách gửi.</p>
-          )}
-        </section>
         <div className={styles.thanks}>
           <h2>Cảm ơn {invitedGuest}</h2>
           <p>Sự xuất hiện của {salutation.toLowerCase()} trong ngày hôm ấy là điều tuyệt vời nhất với Duy Anh.</p>
