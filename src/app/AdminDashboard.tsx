@@ -284,7 +284,6 @@ export function AdminDashboard({ createAction, deleteAction, invites, logoutActi
       ),
     [invites],
   );
-  const totalMessages = allMessages.length;
   const selectedInvite = useMemo(
     () => visibleInvites.find((invite) => invite.id === selectedId) || visibleInvites[0] || invites[0],
     [invites, selectedId, visibleInvites],
@@ -296,12 +295,6 @@ export function AdminDashboard({ createAction, deleteAction, invites, logoutActi
         <div>
           <p className={styles.eyebrow}>Thiệp mời của Duy Anh</p>
           <h1>Quản lý invite</h1>
-        </div>
-        <div className={styles.topbarStats} aria-label="Tổng quan admin">
-          <strong>{invites.length}</strong>
-          <span>thiệp</span>
-          <strong>{totalMessages}</strong>
-          <span>lời nhắn</span>
         </div>
         <div className={styles.topbarActions}>
           <button type="button" onClick={() => setIsCreating((current) => !current)}>
@@ -369,8 +362,6 @@ export function AdminDashboard({ createAction, deleteAction, invites, logoutActi
         </section>
 
         <aside className={styles.detailPanel} aria-label="Chi tiết thiệp">
-          <AdminInbox messages={allMessages} />
-
           {isCreating ? (
             <CreateInviteForm action={createAction} />
           ) : selectedInvite ? (
@@ -416,6 +407,8 @@ export function AdminDashboard({ createAction, deleteAction, invites, logoutActi
                   Mở tab mới
                 </Link>
               </div>
+
+              <AdminInbox messages={allMessages} />
             </>
           ) : (
             <div className={styles.emptyState}>
